@@ -1,0 +1,120 @@
+{% extends 'core/common/base.html' %}
+{% load humanize %}
+{% block custom_css %}
+<style>
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.4);
+    }
+    .modal-content {
+        background-color: #fefefe;
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+    }
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+    .close:hover,
+    .close:focus {
+        color: #000;
+        text-decoration: none;
+        cursor: pointer;
+    }
+</style>  
+{% endblock custom_css %}
+{% block content %}
+<div class="bg-light py-3">
+  <div class="container">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb" class="main-breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Category List</li>
+      </ol>
+    </nav>
+    <!-- /Breadcrumb -->
+    <div class="row">
+
+    </div>
+  </div>
+</div>
+{% include "core/common/messages.html" %}
+<div class="site-section">
+    
+    <div class="site-section" style="margin-top: -100px;">
+    <div class="container">
+        <div class="row mb-5">
+        <a href="{% url 'add_category_view' %}">
+            <button id="openModal" class="btn btn-secondary mb-3 ml-3"><span class="icon icon-plus"></span>Add Category</button>
+        </a>
+        <form class="col-md-12" method="post">
+            <div class="site-blocks-table">
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th class="product-thumbnail">S/N</th>
+                    <th class="product-name">Name</th>
+                    <th class="product-remove">Number of Products</th>
+                    <th class="product-remove">Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for category in category_list %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td class="product-name">
+                    <h2 class="h5 text-black">{{ category.name.title }}</h2>
+                    </td>
+                    <td>{{ category.product_set.count }}</td>
+                    <td>
+                        <a href="{% url 'update_category_view' category.id %}"><span title="Update {{ category.name }}" style="color: blue" class="icon icon-edit ml-2"></span></a>
+                        <a href="{% url 'delete_category' category.id %}"><span title="Delete {{ category.name }}" style="color: red" class="icon icon-trash ml-2"></span></a>
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            </div>
+        </form>
+        </div>
+    </div>
+    </div>
+</div>
+
+<!-- Add Product Modal -->
+<div id="myModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <p>Some text in the Modal..</p>
+    </div>
+</div>
+{% endblock content %}
+{% block custom_js %}
+  <script type="text/javascript">
+      var modal = document.getElementById("myModal");
+      var btn = document.getElementById("openModal");
+      var span = document.getElementsByClassName("close")[0];
+
+      btn.onclick = function() {
+          modal.style.display = "none";
+      }
+
+      window.onclick = function(event) {
+          if(event.target == modal){
+              modal.style.display = "none";
+          }
+      }
+  </script>
+{% endblock custom_js %}

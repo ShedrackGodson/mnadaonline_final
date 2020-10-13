@@ -1,0 +1,147 @@
+{% extends 'core/common/base.html' %}
+{% load humanize %}
+{% block custom_css %}
+<style>
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.4);
+    }
+    .modal-content {
+        background-color: #fefefe;
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+    }
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+    .close:hover,
+    .close:focus {
+        color: #000;
+        text-decoration: none;
+        cursor: pointer;
+    }
+</style>  
+{% endblock custom_css %}
+{% block content %}
+<div class="bg-light py-3">
+  <div class="container">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb" class="main-breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Products</li>
+      </ol>
+    </nav>
+    <!-- /Breadcrumb -->
+    <div class="row">
+
+    </div>
+  </div>
+</div>
+{% include "core/common/messages.html" %}
+<div class="site-section">
+    
+    <div class="site-section" style="margin-top: -100px;">
+    <div class="container">
+        <div class="row mb-5">
+        <a href="{% url 'add_product' %}">
+            <button id="openModal" class="btn btn-secondary mb-3 ml-3"><span class="icon icon-plus"></span>Add Product</button>
+        </a>
+        <form class="col-md-12" method="post">
+            <div class="site-blocks-table">
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th class="product-thumbnail">Image</th>
+                    <th class="product-name">Name</th>
+                    <th class="product-price">Price</th>
+                    <!-- <th class="product-quantity">Description</th> -->
+                    <!-- <th class="product-total">Category</th> -->
+                    <th class="product-total">Valid Until</th>
+                    <th class="product-remove">Status</th>
+                    <th class="product-remove">Condition</th>
+                    <th class="product-remove">Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for product in products %}
+                <tr>
+                    <td class="product-thumbnail">
+                    <img src="{{ product.image.url }}" alt="Image" class="img-fluid">
+                    </td>
+                    <td class="product-name">
+                    <h2 class="h5 text-black">{{ product.name.title }}</h2>
+                    </td>
+                    <td>TZS {{ product.price|intcomma }}</td>
+                    <!-- <td>
+                    {{ product.description|safe }}
+                    </td> -->
+                    <!-- <td>{{ product.category.name.title }}</td> -->
+                    <td>{{ product.valid_until }}</td>
+                    <td>
+                        {% if product.display_status == 'a' %}
+                        <span style="color: green;">Available</span>
+                        {% else %}
+                        <span style="color: red;">Unavailable</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if product.new == True %}
+                          <span style="color: rgb(121, 113, 234);font-weight: 900;">NEW</span>
+                        {% else %}
+                        <span style="font-weight: 900;">USED</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{% url 'product_details' product.id %}"><span title="View {{ product.name }}" style="color: green" class="icon icon-eye"></span></a>
+                        <a href="{% url 'update_product_view' product.id %}"><span title="Update {{ product.name }}" style="color: blue" class="icon icon-edit ml-2"></span></a>
+                        <a href="{% url 'delete_product' product.id %}"><span title="Delete {{ product.name }}" style="color: red" class="icon icon-trash ml-2"></span></a>
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            </div>
+        </form>
+        </div>
+    </div>
+    </div>
+</div>
+
+<!-- Add Product Modal -->
+<div id="myModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <p>Some text in the Modal..</p>
+    </div>
+</div>
+{% endblock content %}
+{% block custom_js %}
+  <script type="text/javascript">
+      var modal = document.getElementById("myModal");
+      var btn = document.getElementById("openModal");
+      var span = document.getElementsByClassName("close")[0];
+
+      btn.onclick = function() {
+          modal.style.display = "none";
+      }
+
+      window.onclick = function(event) {
+          if(event.target == modal){
+              modal.style.display = "none";
+          }
+      }
+  </script>
+{% endblock custom_js %}

@@ -1,0 +1,359 @@
+{% extends 'core/common/base.html' %}
+{% load static %}
+{% load humanize %}
+{% block custom_css %}
+<style>
+    /* body {
+        margin-top: 20px;
+        color: #1a202c;
+        text-align: left;
+        background-color: #e2e8f0;
+    } */
+
+    .main-body {
+        padding: 15px;
+    }
+
+    .card {
+        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .1), 0 1px 2px 0 rgba(0, 0, 0, .06);
+    }
+
+    .card {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+        word-wrap: break-word;
+        background-color: #fff;
+        background-clip: border-box;
+        border: 0 solid rgba(0, 0, 0, .125);
+        border-radius: .25rem;
+    }
+
+    .card-body {
+        flex: 1 1 auto;
+        min-height: 1px;
+        padding: 1rem;
+    }
+
+    .gutters-sm {
+        margin-right: -8px;
+        margin-left: -8px;
+    }
+
+    .gutters-sm>.col,
+    .gutters-sm>[class*=col-] {
+        padding-right: 8px;
+        padding-left: 8px;
+    }
+
+    .mb-3,
+    .my-3 {
+        margin-bottom: 1rem !important;
+    }
+
+    .bg-gray-300 {
+        background-color: #e2e8f0;
+    }
+
+    .h-100 {
+        height: 100% !important;
+    }
+
+    .shadow-none {
+        box-shadow: none !important;
+    }
+    input:focus, input:active{
+        border: 0;
+    }
+</style>
+{% endblock custom_css %}
+{% block content %}
+<div class="bg-light py-3">
+    <div class="container">
+        <!-- Breadcrumb -->
+        <nav aria-label="breadcrumb" class="main-breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                {% if request.user.is_superuser %}
+                <li class="breadcrumb-item"><a href="{% url 'products' %}">Products</a></li>
+                {% else %}
+                <li class="breadcrumb-item"><a href="shop.html">Shop</a></li>
+                {% endif %}
+                <li class="breadcrumb-item active" aria-current="page">{{ object.name }}</li>
+            </ol>
+        </nav>
+        <!-- /Breadcrumb -->
+    </div>
+</div>
+
+<div class="site-section">
+    <div class="container">
+        <div class="row">
+            {% include "core/common/messages.html" %}
+            <div class="col-md-12">
+                <!-- <h2 class="h3 mb-3 text-black">Profile</h2> -->
+            </div>
+            <div class="col-md-12">
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="container">
+                        <div class="main-body">
+                            <div class="row gutters-sm">
+                                <div class="col-md-4 mb-3">
+                                    <div class="card">
+                                        {% if request.user.username not in bought_products_customers and object.valid_until >= now and not request.user.is_superuser %}
+                                        <a href="{% url 'place_bid' object.id request.user.id %}">
+                                            <button type="button" id="save_changes" class="btn btn-lg btn-primary float-left ml-3">
+                                                <span class="icon icon-send"></span>
+                                                Place bid
+                                            </button>
+                                        </a>
+                                        {% else %}
+                                        {% if object.valid_until >= now and not request.user.is_superuser %}
+                                        <a href="{% url 'update_bid' request.user.id object.id %}">
+                                            <button type="button" id="save_changes" class="btn  btn-lg btn-info float-left ml-3">
+                                                <span class="icon icon-refresh"></span>
+                                                Update bid
+                                            </button>
+                                        </a>
+                                        {% elif object.bid_winner == request.user %}
+                                        <button disabled type="submit" id="save_changes" class="btn btn-success float-right">
+                                            <span class="icon icon-lost"></span>
+                                            won
+                                        </button>
+                                        {% endif %}
+                                        {% endif %}
+                                        <div class="card-body">
+                                           
+                                            <div class="d-flex flex-column align-items-center text-center">
+                                                <img src="{{ object.image.url }}" alt="Admin" class="round-circle" height="300" width="300" onclick="performClick('profile_image');">
+                                                <div class="mt-3">
+                                                    <!-- <h4>{{ user.first_name.title }} {{ user.last_name.title }}</h4>
+                                                    <p class="text-secondary mb-1">
+                                                        <span style="font-size: x-large;color: rgba(143, 122, 7, 0.562);" class="icon icon-star"></span>
+                                                        <span style="font-size: x-large;color: rgba(143, 122, 7, 0.562);" class="icon icon-star"></span>
+                                                        <span style="font-size: x-large;color: rgba(143, 122, 7, 0.562);" class="icon icon-star"></span>
+                                                    </p> -->
+                                                    <!-- <p class="text-muted font-size-sm">{{ user.address|safe }}</p> -->
+                                                    <!-- {% if not request.user == user %}
+                                                    <button class="btn btn-primary">
+                                                        <span class="icon icon-message"></span>
+                                                        Message
+                                                    </button>
+                                                    {% endif %} -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="card mb-3">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-sm-3">
+                                                    <h6 class="mb-0">Product Name</h6>
+                                                </div>
+                                                <div class="col-sm-9 text-secondary">
+                                                    <p>{{ object.name.title }}</p>
+                                                </div>
+                                            </div>
+                                            <hr>
+                                            <div class="row">
+                                                <div class="col-sm-3">
+                                                    <h6 class="mb-0">Product Price</h6>
+                                                </div>
+                                                <div class="col-sm-9 text-secondary">
+                                                    <p>TZS {{ object.price|intcomma }}</p>
+                                                </div>
+                                            </div>
+                                            <hr>
+                                            <div class="row">
+                                                <div class="col-sm-3">
+                                                    <h6 class="mb-0">Status</h6>
+                                                </div>
+                                                <div class="col-sm-9 text-secondary">
+                                                    {% if object.display_status == 'a' %}
+                                                    <span style="color: green; font-weight: 700;">Available</span>
+                                                    {% else %}
+                                                    <span style="color: red;font-weight: 700;">Unavailable</span>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                            <hr>
+                                            <div class="row">
+                                                <div class="col-sm-3">
+                                                    <h6 class="mb-0">Valid Until</h6>
+                                                </div>
+                                                <div class="col-sm-9 text-secondary">
+                                                    <p>{{ object.valid_until }}</p>
+                                                </div>
+                                            </div>
+                                            <hr>
+                                            <div class="row">
+                                                <div class="col-sm-3">
+                                                    <h6 class="mb-0">Condition</h6>
+                                                </div>
+                                                <div class="col-sm-9 text-secondary">
+                                                    <p>
+                                                        {% if object.new == True %}
+                                                        <span style="color: rgb(121, 113, 234);font-weight: 900;">NEW</span>
+                                                        {% else %}
+                                                        <span style="font-weight: 700;">USED</span>
+                                                        {% endif %}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row gutters-sm">
+                                        <div class="col-sm-12 mb-3">
+                                            <div class="card h-100">
+                                                <div class="card-body">
+                                                    <h6 class="d-flex align-items-center mb-3"><i
+                                                            class="material-icons text-info mr-2"></i>Customers Placed Bids</h6>
+                                                    {% for bp in bought_products %}
+                                                    {% if bp.customer == request.user %}
+                                                    <p title="This is your bid." style="color: blue;font-weight: 700;cursor: help;">{{ bp.customer.first_name.title }} {{ bp.customer.last_name.title }}({{ bp.customer.username }})</p>
+                                                    {% else %}
+                                                    <p>{{ bp.customer.first_name.title }} {{ bp.customer.last_name.title }}({{ bp.customer.username }})</p>
+                                                    {% endif %}
+                                                    <p style="margin-top: -10px;">Bid Price: TZS {{ bp.customer_price|intcomma }}</p>
+                                                    {% if bp.customer == object.bid_winner %}
+                                                    <span style="font-size: x-large;color: rgb(206, 187, 103);" class="icon icon-star">WINNER!
+                                                    {% if bp.customer == request.user %}
+                                                      (YOU WON 👏)
+                                                    {% endif %}
+                                                    </span>
+                                                    {% endif %}
+                                                    <div class="progress mb-3" style="height: 5px;cursor: help;">
+                                                        <div title="{{ bp.get_title }}" class="progress-bar bg-{{ bp.price_bar_color }}" role="progressbar"
+                                                            style="width: {{ bp.percentage_calc }}%" aria-valuenow="80" aria-valuemin="0"
+                                                            aria-valuemax="100"></div>
+                                                    </div>
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- <button type="submit" id="save_changes" class="btn btn-secondary float-right">
+                                        <span class="icon icon-save"></span>
+                                        Save Changes
+                                    </button> -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block custom_js %}
+<script>
+    $(document).ready(function () {
+        // Changing Profile Image On Click Event
+        function performClick(elemId){
+            var elem = document.getElementById(elemId);
+            if(elem && document.createEvent){
+                var evt = document.createEvent("MouseEvents");
+                evt.initEvent("click", true, false);
+                elem.dispatchEvent(evt);
+            }
+        }
+
+
+        var btn = document.getElementById("save_changes");
+
+        // Checking Passwords Match
+        function checkPasswordMatch() {
+            var password = $("#password").val();
+            var c_password = $("#c_password").val();
+            if (password != c_password) {
+                $("#divCheckPasswordMatch").html("Passwords didn't match.");
+                btn.setAttribute('type', 'button')
+                btn.setAttribute('class', 'btn btn-secondary btn-lg btn-block mb-3')
+            } else {
+                $("#divCheckPasswordMatch").html("");
+                btn.setAttribute('type', 'submit')
+                btn.setAttribute('class', 'btn btn-primary btn-lg btn-block mb-3')
+            }
+        }
+        $("#c_password").keyup(checkPasswordMatch);
+        // Checking Passwords Match Ends
+
+        $("#email").keyup(function () {
+            var email = $(this).val();
+
+            if (email != "" && email != "{{user.email}}") {
+                $.ajax({
+                        url: '{% url 'check_email_exist' %}',
+                        type: 'POST',
+                        data: {
+                            email: email
+                        }
+                    })
+                    .done(function (response) {
+                        console.log(response);
+                        if (response == "True") {
+                            $(".email_error").remove();
+                            $("<span class='email_error' style='padding: 5px;color: red;font-weight: bold;'>Email address already taken.</span>")
+                                .insertAfter("#email");
+
+                            btn.setAttribute('type', 'button')
+                            // alert("Email address already taken.")
+                        } else {
+                            // $(".email_error").remove();
+                            // $("<span class='email_error' style='padding: 5px;color: green;font-weight: bold;'>Email Available</span>")
+                            //   .insertAfter("#email");
+                            btn.setAttribute('type', 'submit')
+                        }
+                    })
+                    .fail(function () {
+                        console.log("failed");
+                    })
+            } else {
+                $(".email_error").remove();
+            }
+
+        });
+
+        $("#username").keyup(function () {
+
+            var username = $(this).val();
+
+            if (username != "" && username != "{{user.username}}") {
+                $.ajax({
+                        url: '{% url 'check_username_exist' %}',
+                        type: 'POST',
+                        data: {
+                            username: username
+                        }
+                    })
+                    .done(function (response) {
+                        console.log(response);
+                        if (response == "True") {
+                            $(".username_error").remove();
+                            $("<span class='username_error' style='color: red;font-weight: bold;'>Username already taken.</span>")
+                                .insertAfter("#username");
+                            btn.setAttribute('type', 'button')
+                            // alert("Username already taken.")
+                        } else {
+                            $(".username_error").remove();
+                            $("<span class='username_error' style='color: green;font-weight: bold;'> </span>")
+                                .insertAfter("#username");
+                            btn.setAttribute('type', 'submit')
+                        }
+                    })
+                    .fail(function () {
+                        console.log("failed");
+                    })
+            } else {
+                $(".username_error").remove();
+            }
+        });
+    });
+</script>
+{% endblock custom_js %}

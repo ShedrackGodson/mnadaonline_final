@@ -1,0 +1,49 @@
+{% extends 'core/common/base.html' %}
+{% block content %}
+<div class="bg-light py-3">
+  <div class="container">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb" class="main-breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Logout</li>
+      </ol>
+    </nav>
+    <!-- /Breadcrumb -->
+    <div class="row">
+
+    </div>
+  </div>
+</div>
+
+<div class="site-section">
+  <div class="container">
+    <div class="row">
+      {% include "core/common/messages.html" %}
+      <div class="col-md-12">
+        <h2 class="h3 mb-3 text-black">Logout Form</h2>
+      </div>
+      <div class="col-md-12">
+
+        <form method="POST" action="{% url 'logout_view' %}">
+          {% csrf_token %}
+          <div class="p-3 p-lg-5 border">
+            <input type="hidden" name="username" class="form-control" value="{{ request.user.username }}">
+            <div class="mb-3">
+              <p style="text-align: center;color: red;">Once you logout your session will end.</p>
+              <h4 style="text-align: center;">Are you sure to logout?</h4>
+            </div>
+
+            <div class="form-group row">
+              <div class="col-lg-12">
+                <input type="submit" class="btn btn-info btn-lg btn-block mb-3" value="logout">
+              </div>
+
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}

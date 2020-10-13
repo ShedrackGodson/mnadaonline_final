@@ -1,0 +1,74 @@
+{% extends 'core/common/base.html' %}
+{% load humanize %}
+{% block custom_css %}
+  <style>
+      #id_name,#id_price,#id_category,#id_image,#id_description {
+        display: block;
+        width: 100%;
+        padding: 0.375rem 0.75rem;
+        font-size: 1rem;
+        line-height: 1.5;
+        color: #495057;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
+    }
+      #id_name:active, #id_name:focus {
+        border-color: #7971ea;
+    }
+  </style>
+{% endblock custom_css %}
+{% block content %}
+<div class="bg-light py-3">
+    <div class="container">
+        <!-- Breadcrumb -->
+        <nav aria-label="breadcrumb" class="main-breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'category' %}">Category List</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Update {{ object.name }}</li>
+            </ol>
+        </nav>
+        <!-- /Breadcrumb -->
+        <div class="row">
+
+        </div>
+    </div>
+</div>
+
+<div class="site-section">
+    {% include "core/common/messages.html" %}
+    <div class="site-section" style="margin-top: -100px;">
+        <div class="container">
+            <div class="row">
+
+                <div class="col-md-12">
+                    <h2 class="h3 mb-3 text-black">Update {{ object.name }}</h2>
+                </div>
+                <div class="col-md-12">
+
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="p-3 p-lg-5 border">
+                            <div class="form-group row">
+                                <div class="col-md-12">
+                                    <label for="product_name" class="text-black">Product Name <span
+                                            class="text-danger">*</span></label>
+                                    {{ form.name }}
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-lg-12">
+                                    <input type="submit" class="btn btn-primary btn-lg btn-block mb-3" value="Update">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

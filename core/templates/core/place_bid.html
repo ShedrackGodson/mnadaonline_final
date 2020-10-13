@@ -1,0 +1,68 @@
+{% extends 'core/common/base.html' %}
+{% load humanize %}
+{% block content %}
+<div class="bg-light py-3">
+  <div class="container">
+    <div class="row">
+        <div class="col-md-12 mb-0">
+          <a href="{% url 'home' %}">Home</a> 
+          {% if request.user.is_superuser %}
+          <span class="mx-2 mb-0">/</span>
+          <a href="{% url 'products' %}">Product</a> 
+          {% endif %}
+          <span class="mx-2 mb-0">/</span>
+          <a href="{% url 'product_details' product.id %}">{{ product.name.title }}</a> 
+          <span class="mx-2 mb-0">/</span>
+          <strong class="text-black">Place Bid</strong>
+        </div>
+    </div>
+  </div>
+</div>
+
+<div class="site-section">
+  <div class="container">
+    <div class="row">
+      {% include "core/common/messages.html" %}
+      <div class="col-md-12">
+        <h2 class="h3 mb-3 text-black">Place Bid Form</h2>
+      </div>
+      <div class="col-md-12">
+        <p style="color: red;text-align: center;">You must Enter Bid Price Greater of Equal to Product Price In Order To Proceed.</p>
+        <form method="POST">
+          {% csrf_token %}
+          <div class="p-3 p-lg-5 border">
+            <div class="form-group row">
+              <div class="col-md-12">
+                <label for="bid_price" class="text-black">Bid Price <span class="text-danger">*</span></label>
+                <input type="number" class="form-control" id="bid_price" name="bid_price" placeholder="" required>
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-md-12">
+                <label for="product_name" class="text-black">Product Name <span class="text-danger"></span></label>
+                <input disabled type="text" class="form-control" id="product_name" value="{{ product.name.title }}" name="product_name" placeholder="">
+              </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-md-12">
+                  <label for="product_price" class="text-black">Product Price <span class="text-danger"></span></label>
+                  <input disabled type="text" class="form-control" id="product_price" value="TZS {{ product.price|intcomma }}" name="product_price" placeholder="">
+                </div>
+              </div>
+
+            <div class="form-group row">
+              <div class="col-lg-12">
+                <input type="submit" class="btn btn-primary btn-lg btn-block mb-3" value="Submit">
+                <!-- <div class="float-right">
+                  Dont have an account? <a href="{% url 'showSignUpPage' %}">Sign Up Here</a>
+                </div> -->
+              </div>
+
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}
