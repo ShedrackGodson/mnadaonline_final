@@ -35,10 +35,10 @@
           <div class="row align-items-center">
 
             <div class="col-6 col-md-4 order-2 order-md-1 site-search-icon text-left">
-              <form action="" class="site-block-top-search">
+              <!-- <form action="" class="site-block-top-search">
                 <span class="icon icon-search2"></span>
                 <input type="text" class="form-control border-0" placeholder="Search">
-              </form>
+              </form> -->
             </div>
 
             <div class="col-12 mb-3 mb-md-0 col-md-4 order-1 order-md-2 text-center">
@@ -52,12 +52,12 @@
                 <ul>
                   <!-- <li><a href="#"><span class="icon icon-person"></span></a></li>
                   <li><a href="#"><span class="icon icon-heart-o"></span></a></li> -->
-                  <li>
+                  <!-- <li>
                     <a href="cart.html" class="site-cart">
                       <span class="icon icon-shopping_cart"></span>
                       <span class="count">2</span>
                     </a>
-                  </li>
+                  </li> -->
                   <li class="d-inline-block d-md-none ml-md-0"><a href="#" class="site-menu-toggle js-menu-toggle"><span
                         class="icon-menu"></span></a></li>
                 </ul>
@@ -73,7 +73,7 @@
             <li class="has-">
               <a href="{% url 'home' %}">Home</a>
             </li>
-            <li><a href="shop.html">Shop</a></li>
+            <!-- <li><a href="shop.html">Shop</a></li> -->
             {% if request.user.is_superuser %}
             <li><a href="{% url 'users' %}">Users</a></li>
             <li class="has-children">
@@ -110,24 +110,24 @@
               </div>
               <div class="col-md-6 col-lg-4">
                 <ul class="list-unstyled">
-                  <li><a href="#">Sell online</a></li>
-                  <li><a href="#">Features</a></li>
-                  <li><a href="#">Shopping cart</a></li>
-                  <li><a href="#">Store builder</a></li>
+                  <li><a href="javascript:void(0);">Sell online</a></li>
+                  <li><a href="javascript:void(0);">Our Store</a></li>
+                  <!-- <li><a href="#">Shopping cart</a></li>
+                  <li><a href="#">Store builder</a></li> -->
                 </ul>
               </div>
               <div class="col-md-6 col-lg-4">
                 <ul class="list-unstyled">
-                  <li><a href="#">Mobile commerce</a></li>
-                  <li><a href="#">Dropshipping</a></li>
-                  <li><a href="#">Website development</a></li>
+                  <li><a href="javascript:void(0);">Profile</a></li>
+                  <li><a href="javascript:void(0);">Products</a></li>
+                  <!-- <li><a href="#">Website development</a></li> -->
                 </ul>
               </div>
               <div class="col-md-6 col-lg-4">
                 <ul class="list-unstyled">
-                  <li><a href="#">Point of sale</a></li>
-                  <li><a href="#">Hardware</a></li>
-                  <li><a href="#">Software</a></li>
+                  <li><a href="{% url 'showSignUpPage' %}">Sign Up</a></li>
+                  <li><a href="{% url 'showLoginPage' %}">Sign In</a></li>
+                  <!-- <li><a href="#">Software</a></li> -->
                 </ul>
               </div>
             </div>
@@ -170,7 +170,7 @@
                 src=""></script>
               <script>
                 document.write(new Date().getFullYear());
-              </script> All rights reserved.
+              </script> All rights reserved. <a style="color: #8c92a0;" target="_blank" href="https://twitter.com/godson_shedrack/">Developer</a>
               <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
             </p>
           </div>
@@ -189,6 +189,14 @@
   <script src="{% static 'js/aos.js' %}"></script>
 
   <script src="{% static 'js/main.js' %}"></script>
+  <script>
+    $(".shop-now-btn").click(function() {
+      $('html,body').animate({
+        scrollTop: $(".actual-shop").offset().top},
+        'slow');
+      })
+    });
+  </script>
   {% block custom_js %}
   {% endblock custom_js %}
 

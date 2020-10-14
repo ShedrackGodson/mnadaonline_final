@@ -106,9 +106,9 @@
                                                 <div class="mt-3">
                                                     <h4>{{ user.first_name.title }} {{ user.last_name.title }}</h4>
                                                     <p class="text-secondary mb-1">
+                                                        {% for i in range %}
                                                         <span style="font-size: x-large;color: rgba(143, 122, 7, 0.562);" class="icon icon-star"></span>
-                                                        <span style="font-size: x-large;color: rgba(143, 122, 7, 0.562);" class="icon icon-star"></span>
-                                                        <span style="font-size: x-large;color: rgba(143, 122, 7, 0.562);" class="icon icon-star"></span>
+                                                        {% endfor %}
                                                     </p>
                                                     <p class="text-muted font-size-sm">{{ user.address|safe }}</p>
                                                     {% if not request.user == user %}
@@ -176,8 +176,7 @@
                                             <div class="card h-100">
                                                 <div class="card-body">
                                                     <h6 class="d-flex align-items-center mb-3"><i
-                                                            class="material-icons text-info mr-2"></i>Products 
-                                                        Bought</h6>
+                                                            class="material-icons text-info mr-2"></i>Bids Placed</h6>
                                                     <small>Web Design</small>
                                                     <div class="progress mb-3" style="height: 5px">
                                                         <div class="progress-bar bg-primary" role="progressbar"

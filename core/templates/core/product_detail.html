@@ -78,7 +78,7 @@
                 {% if request.user.is_superuser %}
                 <li class="breadcrumb-item"><a href="{% url 'products' %}">Products</a></li>
                 {% else %}
-                <li class="breadcrumb-item"><a href="shop.html">Shop</a></li>
+                <!-- <li class="breadcrumb-item"><a href="shop.html">Shop</a></li> -->
                 {% endif %}
                 <li class="breadcrumb-item active" aria-current="page">{{ object.name }}</li>
             </ol>
@@ -121,6 +121,11 @@
                                         <button disabled type="submit" id="save_changes" class="btn btn-success float-right">
                                             <span class="icon icon-lost"></span>
                                             won
+                                        </button>
+                                        {% elif not object.bid_winner == request.user and not request.user.is_superuser %}
+                                        <button disabled type="submit" id="save_changes" class="btn btn-danger float-right">
+                                            <span class="icon icon-lost"></span>
+                                            lost
                                         </button>
                                         {% endif %}
                                         {% endif %}
@@ -211,7 +216,9 @@
                                             <div class="card h-100">
                                                 <div class="card-body">
                                                     <h6 class="d-flex align-items-center mb-3"><i
-                                                            class="material-icons text-info mr-2"></i>Customers Placed Bids</h6>
+                                                            class="material-icons text-info mr-2"></i>Customers Placed Bids
+                                                    </h6>
+                                                    {% if bought_products %}
                                                     {% for bp in bought_products %}
                                                     {% if bp.customer == request.user %}
                                                     <p title="This is your bid." style="color: blue;font-weight: 700;cursor: help;">{{ bp.customer.first_name.title }} {{ bp.customer.last_name.title }}({{ bp.customer.username }})</p>
@@ -232,6 +239,9 @@
                                                             aria-valuemax="100"></div>
                                                     </div>
                                                     {% endfor %}
+                                                    {% else %}
+                                                    <h5 class="ml-3">No Bids Placed!</h5>
+                                                    {% endif %}
                                                 </div>
                                             </div>
                                         </div>

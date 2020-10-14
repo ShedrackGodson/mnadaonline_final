@@ -128,9 +128,10 @@ def check_username_exist(request):
 @login_required(login_url="showLoginPage")
 def user_profile(request, id):
     """ This is to view the user profile """
-
+    user = User.objects.get(id=id)
     return render(request, "core/profile.html",{
-        "user": User.objects.get(id=id)
+        "user": user,
+        "range": range(user.stars)
     })
 
 
@@ -372,4 +373,5 @@ def adding_subscriber(request):
     Subscriber.objects.create(
         email = request.POST.get("email")
     )
-    
+    messages.success(request, "You have subscribed to our news feeds.")
+    return redirect("home")

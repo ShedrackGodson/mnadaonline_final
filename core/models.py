@@ -3,6 +3,8 @@ from django.contrib.auth.models import User, AbstractUser
 from django.dispatch import receiver
 from django.db.models.signals import post_save
 from django.utils import timezone
+import datetime
+from dateutil.relativedelta import relativedelta
 
 
 
@@ -37,6 +39,14 @@ class Product(models.Model):
     sold = models.BooleanField(default=False)
     new = models.BooleanField(default=False)
     valid_until = models.DateTimeField()
+
+    def get_time_left(self):
+        t_diff = relativedelta(self.valid_until.replace(tzinfo=None), timezone.now().replace(tzinfo=None))
+        return "{h}H {m}M".format(
+            h=t_diff.hours,
+            m=t_diff.minutes,
+            # s=t_diff.seconds
+        )
 
     def display_status(self):
         for _ in Product.objects.all():
@@ -126,6 +136,8 @@ class BuyProduct(models.Model):
             title = "BID PRICE PLACED IS {}% OF THE PRODUCT PRICE.".format(
                 self.percentage_calc()
             )
+        else:
+            title = "BID PRICE PLACED IS 100% OF THE PRODUCT PRICE."
         return title
     
 

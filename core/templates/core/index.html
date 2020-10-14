@@ -12,7 +12,7 @@
         <div class="intro-text text-center text-md-left">
           <p class="mb-4">It is only here where you can get these quality products with low price. Take your chance by placing a Bid!</p>
           <p>
-            <a href="#" class="btn btn-sm btn-primary">Shop Now</a>
+            <a href="#featured-products" class="btn btn-sm btn-primary shop-now-btn">Shop Now</a>
           </p>
         </div>
       </div>
@@ -96,12 +96,12 @@
 
 <div class="site-section block-3 site-blocks-2 bg-light">
   <div class="container">
-    <div class="row justify-content-center">
+    <div class="row justify-content-center" id="featured-products">
       <div class="col-md-7 site-section-heading text-center pt-4">
         <h2>Featured Products</h2>
       </div>
     </div>
-    <div class="row">
+    <div class="row actual-shop">
       <div class="col-md-12">
         <div class="nonloop-block-3 owl-carousel">
           {% for product in products %}
@@ -115,6 +115,11 @@
               <div class="block-4-text p-4">
                 <h3><a href="#">{{ product.name.title }}</a></h3>
                 <p class="mb-0">Valid Until: {{ product.valid_until }}</p>
+                {% if product.get_time_left|slice:"1" == '-' %}
+                <p class="mb-0">Time Passed: <span style="color: red;">Bidding Closed</span></p>
+                {% else %}
+                <p class="mb-0">Time Left: {{ product.get_time_left }}</p>
+                {% endif %}
                 <p class="mb-0">Bids Placed: {{ product.get_total_bids }}</p>
                 <p class="text-primary font-weight-bold">TZS {{ product.price|intcomma }}</p>
               </div>
@@ -142,7 +147,7 @@
         <h2><a href="#">50% less in all items</a></h2>
         <p class="post-meta mb-4">By <a href="#">Carl Smith</a> <span class="block-8-sep">&bullet;</span> September 3, 2018</p>
         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quisquam iste dolor accusantium facere corporis ipsum animi deleniti fugiat. Ex, veniam?</p>
-        <p><a href="#" class="btn btn-primary btn-sm">Shop Now</a></p>
+        <p><a href="#featured-products" class="btn btn-primary btn-sm">Shop Now</a></p>
       </div>
     </div>
   </div>
