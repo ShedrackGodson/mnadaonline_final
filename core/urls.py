@@ -3,7 +3,8 @@ from .views import (home, showLoginPage, showSignUpPage, login_view, signup_view
         check_email_exist, check_username_exist, logout_view, showLogoutPage,
         user_profile, users, update_profile, products, add_product, delete_product,
         delete_product_view, UpdateProductView, category, add_category_view, UpdateCategoryView,
-        delete_category, product_details, place_bid, bid_success, update_bid, adding_subscriber
+        delete_category, product_details, place_bid, bid_success, update_bid, adding_subscriber,
+        UpdateUserProfileImage,
     )
 
 
@@ -23,6 +24,7 @@ urlpatterns = [
     path("user/<int:id>/profile/", user_profile, name="user_profile"),
     path("users/", users, name="users"),
     path("users/<int:id>/profile/update/", update_profile, name="update_profile"),
+    path("users/<int:pk>/profile/image/update/", UpdateUserProfileImage.as_view(), name="update_profile_image"),
 
     # Product
     path("products/", products, name="products"),

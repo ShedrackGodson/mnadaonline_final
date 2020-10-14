@@ -375,3 +375,13 @@ def adding_subscriber(request):
     )
     messages.success(request, "You have subscribed to our news feeds.")
     return redirect("home")
+
+
+class UpdateUserProfileImage(LoginRequiredMixin, UpdateView):
+    model = UserProfile
+    fields = ["photo"]
+    template_name = "core/update_profile_image.html"
+    success_message = "Profile Picture Successfully Updated."
+    success_url = "/"
+    
+    

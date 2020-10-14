@@ -74,7 +74,7 @@ class Product(models.Model):
             product = self
         ).first()
         winnerObj = winner.customer
-        winnerObj.stars += 1
+        winnerObj.stars = winnerObj.stars + 1
         winnerObj.save()
         
         return winnerObj
