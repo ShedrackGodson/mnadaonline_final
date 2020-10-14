@@ -20,8 +20,17 @@ User = get_user_model()
 def home(request):
     """ This is home page """
 
+    # Big Sale!
+    big_sale = BuyProduct.objects.first()
+
+    for _ in BuyProduct.objects.all():
+        if _.customer_price > big_sale.customer_price:
+            big_sale = _
+
     return render(request, "core/index.html", {
-        "products": Product.objects.all()
+        "products": Product.objects.all(),
+        "latest": Product.objects.first(),
+        "big_sale": big_sale
     })
 
 

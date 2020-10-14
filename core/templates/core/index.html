@@ -4,7 +4,7 @@
 {% load humanize %}
 {% block content %}
 {% include "core/common/messages.html" %}
-<div class="site-blocks-cover" style="background-image: url({% static 'images/hero_1.jpg' %});" data-aos="fade">
+<div class="site-blocks-cover" style="background-image: url({{ latest.image.url }});width: 100%" data-aos="fade">
   <div class="container">
     <div class="row align-items-start align-items-md-center justify-content-end">
       <div class="col-md-5 text-center text-md-left pt-5 pt-md-0">
@@ -141,12 +141,12 @@
     </div>
     <div class="row align-items-center">
       <div class="col-md-12 col-lg-7 mb-5">
-        <a href="#"><img src="{% static 'images/blog_1.jpg' %}" alt="Image placeholder" class="img-fluid rounded"></a>
+        <a href="{%url 'product_details' big_sale.product.id %}"><img src="{{ big_sale.product.image.url }}" alt="{{ big_sale.product.name.title }}" class="img-fluid rounded"></a>
       </div>
       <div class="col-md-12 col-lg-5 text-center pl-md-5">
-        <h2><a href="#">50% less in all items</a></h2>
-        <p class="post-meta mb-4">By <a href="#">Carl Smith</a> <span class="block-8-sep">&bullet;</span> September 3, 2018</p>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quisquam iste dolor accusantium facere corporis ipsum animi deleniti fugiat. Ex, veniam?</p>
+        <h2><a href="{%url 'product_details' big_sale.product.id %}">{{ big_sale.percentage_calc }}% than product price</a></h2>
+        <p class="post-meta mb-4">Won By <a href="#">{{ big_sale.product.bid_winner.get_full_name }}</a> <span class="block-8-sep">&bullet;</span>
+        <p>{{ big_sale.product.description|safe }}</p>
         <p><a href="#featured-products" class="btn btn-primary btn-sm">Shop Now</a></p>
       </div>
     </div>
