@@ -1,5 +1,6 @@
 {% extends 'core/common/base.html' %}
 {% load static %}
+{% load humanize %}
 {% block custom_css %}
 <style>
     /* body {
@@ -110,11 +111,9 @@
                                                 <div class="mt-3">
                                                     <h4>{{ user.first_name.title }} {{ user.last_name.title }}</h4>
                                                     <p class="text-secondary mb-1">
-                                                        <!-- {% for i in range %} -->
                                                         <span style="font-size: x-large;color: rgba(143, 122, 7, 0.562);" class="icon icon-star"></span>
                                                         <span style="font-size: x-large;color: rgba(143, 122, 7, 0.562);" class="icon icon-star"></span>
                                                         <span style="font-size: x-large;color: rgba(143, 122, 7, 0.562);" class="icon icon-star"></span>
-                                                        <!-- {% endfor %} -->
                                                     </p>
                                                     <p class="text-muted font-size-sm">{{ user.address|safe }}</p>
                                                     {% if not request.user == user %}
@@ -130,7 +129,7 @@
                                 </div>
                                 <div class="col-md-8">
                                     <div class="card mb-3">
-                                        <div class="card-body">
+                                        <div class="card-body mb-3">
                                             <div class="row">
                                                 <div class="col-sm-3">
                                                     <h6 class="mb-0">Username</h6>
@@ -176,51 +175,36 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <button type="submit" id="save_changes" class="btn btn-secondary float-right">
+                                            <span class="icon icon-save"></span>
+                                            Save Changes
+                                        </button>
                                     </div>
+                                    
                                     <div class="row gutters-sm">
                                         <div class="col-sm-12 mb-3">
                                             <div class="card h-100">
                                                 <div class="card-body">
                                                     <h6 class="d-flex align-items-center mb-3"><i
-                                                            class="material-icons text-info mr-2"></i>Bids Placed</h6>
-                                                    <small>Web Design</small>
-                                                    <div class="progress mb-3" style="height: 5px">
-                                                        <div class="progress-bar bg-primary" role="progressbar"
-                                                            style="width: 80%" aria-valuenow="80" aria-valuemin="0"
-                                                            aria-valuemax="100"></div>
-                                                    </div>
-                                                    <small>Website Markup</small>
-                                                    <div class="progress mb-3" style="height: 5px">
-                                                        <div class="progress-bar bg-success" role="progressbar"
-                                                            style="width: 72%" aria-valuenow="72" aria-valuemin="0"
-                                                            aria-valuemax="100"></div>
-                                                    </div>
-                                                    <small>One Page</small>
-                                                    <div class="progress mb-3" style="height: 5px">
-                                                        <div class="progress-bar bg-danger" role="progressbar"
-                                                            style="width: 32%" title="Bought 32% less." aria-valuenow="89" aria-valuemin="0"
-                                                            aria-valuemax="100"></div>
-                                                    </div>
-                                                    <small>Mobile Template</small>
-                                                    <div class="progress mb-3" style="height: 5px">
-                                                        <div class="progress-bar bg-primary" role="progressbar"
-                                                            style="width: 55%" aria-valuenow="55" aria-valuemin="0"
-                                                            aria-valuemax="100"></div>
-                                                    </div>
-                                                    <small>Backend API</small>
-                                                    <div class="progress mb-3" style="height: 5px">
-                                                        <div class="progress-bar bg-primary" role="progressbar"
-                                                            style="width: 66%" aria-valuenow="66" aria-valuemin="0"
-                                                            aria-valuemax="100"></div>
-                                                    </div>
+                                                            class="material-icons text-info mr-2"></i>My Bids
+                                                    </h6>
+                                                    {% for bid in bids_placed %}
+                                                    <p>Product Name: {{ bid.product.name.title }}</p>
+                                                    <p style="margin-top: -18px;">Product Price: TZS {{ bid.product.price|intcomma }}</p>
+                                                    <p style="margin-top: -18px;">My Price: TZS {{ bid.customer_price|intcomma }}
+                                                    {% if bid.customer == bid.product.bid_winner %}
+                                                    <span style="font-size: large;color: rgb(206, 187, 103);" class="icon icon-star ml-2">WINNER!
+                                                          (YOU WON 👏)
+                                                    </span>
+                                                    {% endif %}
+                                                    </p>
+                                                    <hr>
+                                                    {% endfor %}
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <button type="submit" id="save_changes" class="btn btn-secondary float-right">
-                                        <span class="icon icon-save"></span>
-                                        Save Changes
-                                    </button>
+                                    
                                 </div>
                             </div>
                         </div>

@@ -138,9 +138,13 @@ def check_username_exist(request):
 def user_profile(request, id):
     """ This is to view the user profile """
     user = User.objects.get(id=id)
+
     return render(request, "core/profile.html",{
         "user": user,
-        "range": range(user.stars)
+        "range": range(user.stars),
+        "bids_placed": BuyProduct.objects.filter(
+            customer = user
+        )
     })
 
 
