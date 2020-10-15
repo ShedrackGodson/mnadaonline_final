@@ -180,7 +180,7 @@
                                             Save Changes
                                         </button>
                                     </div>
-                                    
+                                    {% if not user.is_superuser %}
                                     <div class="row gutters-sm">
                                         <div class="col-sm-12 mb-3">
                                             <div class="card h-100">
@@ -194,7 +194,9 @@
                                                     <p style="margin-top: -18px;">My Price: TZS {{ bid.customer_price|intcomma }}
                                                     {% if bid.customer == bid.product.bid_winner %}
                                                     <span style="font-size: large;color: rgb(206, 187, 103);" class="icon icon-star ml-2">WINNER!
+                                                          {% if bid.customer == request.user %}
                                                           (YOU WON 👏)
+                                                          {% endif %}
                                                     </span>
                                                     {% endif %}
                                                     </p>
@@ -204,7 +206,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>
