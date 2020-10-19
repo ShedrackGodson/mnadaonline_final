@@ -43,7 +43,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'mnadaonline.urls'
 
-TEMPLATES = [
+TEMPLATES = [ # HTMLs
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [],
