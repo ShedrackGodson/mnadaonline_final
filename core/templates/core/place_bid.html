@@ -36,6 +36,9 @@
                 <label for="bid_price" class="text-black">Bid Price <span class="text-danger">*</span></label>
                 <input type="number" class="form-control" id="bid_price" name="bid_price" placeholder="" required>
               </div>
+              <div class="ml-3">
+                <div style="color: red;" class="registrationFormAlert" id="divCheckPasswordMatch"></div>
+              </div>
             </div>
             <div class="form-group row">
               <div class="col-md-12">
@@ -52,7 +55,7 @@
 
             <div class="form-group row">
               <div class="col-lg-12">
-                <input type="submit" class="btn btn-primary btn-lg btn-block mb-3" value="Submit">
+                <input onclick="return checkPrice();" type="submit" id="place_bid" class="btn btn-primary btn-lg btn-block mb-3" value="Submit">
                 <!-- <div class="float-right">
                   Dont have an account? <a href="{% url 'showSignUpPage' %}">Sign Up Here</a>
                 </div> -->
@@ -66,3 +69,18 @@
   </div>
 </div>
 {% endblock content %}
+{% block custom_js %}
+  <script>
+    function checkPrice(){
+      var btn = document.getElementById("place_bid");
+      var bid_price = $("#bid_price").val();
+      if(bid_price < "{{product.price}}"){
+        $("#divCheckPasswordMatch").html("Your price must be greater than or equal to {{product.price|intcomma}}");
+        btn.setAttribute("type","button");
+      } else{
+        $("#divCheckPasswordMatch").html("");
+        btn.setAttribute("type","submit");
+      }
+    }
+  </script>
+{% endblock custom_js %}
